@@ -4,3 +4,8 @@
 */logs/*
 */cache/*
 /web/assets/*
+
+
+resources/config/dev.php
+resources/config/prod.php
+resources/config/test.php
