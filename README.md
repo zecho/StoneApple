@@ -35,6 +35,15 @@ Database configuration (you need to create a config file for each environment):
     $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
 
 
+Inspiration
+-----------
+
+* https://github.com/ronanguilloux/SilexMarkdown
+* https://github.com/chanmix51/PommServiceProvider
+* https://github.com/yuriteixeira/behat-silex
+* https://github.com/everzet/silex-mink
+
+
 [s]: http://silex.sensiolabs.org/
 [p]: http://pomm.coolkeums.org/
 [b]: http://behat.org/
