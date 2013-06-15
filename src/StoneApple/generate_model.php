@@ -1,12 +1,13 @@
 <?php #generate_model.php
 
-$env = 'dev';
+require __DIR__.'/autoload.php';
 
-require __DIR__.'/bootstrap.php';
+$env = 'dev';
+$application = new \StoneApple\Application($env);
 
 $scan = new Pomm\Tools\ScanSchemaTool(array(
     'schema' => 'public',
-    'database' => $app['pomm']->getDatabase(),
+    'database' => $application['pomm']->getDatabase(),
     'prefix_dir' => __DIR__.'/Model',
 ));
 $scan->execute();
