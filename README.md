@@ -6,7 +6,7 @@ A [Silex][s] + [Pomm][p] + [Behat][b] webapplication.
 General idea
 ------------
 
-The goal is to have a *blog* running on Silex + Pomm, which is actually will 
+The goal is to have a *blog* running on Silex + Pomm, which actually will 
 have tests (TDD/BDD) in the future but that part is still under construction.
 
 
@@ -26,6 +26,13 @@ Apache2 vhost example:
         ErrorLog /var/log/apache2/error.stone-apple.log
         CustomLog /var/log/apache2/access.stone-apple.log combined
     </VirtualHost>
+
+Database configuration (you need to create a config file for each environment):
+
+    <?php #resources/config/dev.php
+
+    // Pomm
+    $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
 
 
 [s]: http://silex.sensiolabs.org/
