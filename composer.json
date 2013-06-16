@@ -5,6 +5,12 @@
         "twig/twig": ">=1.8,<2.0-dev",
         "pomm/pomm-service-provider":    "dev-master"
     },
+    "require-dev": {
+        "behat/behat": "2.4.*@stable"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    },
     "autoload": {
         "psr-0": {
             "StoneApple\\": "src/",

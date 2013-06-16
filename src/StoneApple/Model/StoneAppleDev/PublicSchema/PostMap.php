@@ -9,4 +9,12 @@ use \Pomm\Query\Where;
 
 class PostMap extends BasePostMap
 {
+    public function truncate()
+    {
+        $sql = sprintf("TRUNCATE TABLE %s",
+            $this->getTableName()
+        );
+
+        return $this->query($sql);
+    }
 }
