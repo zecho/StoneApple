@@ -39,10 +39,6 @@ Database configuration (you need to create a config file for each environment):
     // Pomm
     $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
 
-Generating the model from the db schema:
-
-    $ php src/StoneApple/generate_model.php
-
 
 Pomm/Model
 ----------
