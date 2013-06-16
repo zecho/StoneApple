@@ -13,3 +13,9 @@ Feature: Posts list
     Scenario: read the post list
         When I go to "/post/list"
         Then I should see "2" articles
+        And I should see that one of the articles has the title "In sheep's clothing"
+        And I should see that one of the articles has the title "Time will tell"
+
+    Scenario: read a post
+        When I go to "/post/in-sheep-s-clothing"
+        Then I should see the article with title "In sheep's clothing"

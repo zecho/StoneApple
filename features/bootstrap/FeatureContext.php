@@ -9,8 +9,6 @@ use Behat\Gherkin\Node\PyStringNode,
 
 use Behat\MinkExtension\Context\MinkContext;
 
-use Symfony\Component\BrowserKit\Client;
-
 use StoneApple\Application as StoneAppleApplication;
 use StoneApple\Helper\Helper;
 
@@ -57,13 +55,18 @@ class FeatureContext extends MinkContext
         return $this->application['pomm']->getDatabase()->getConnection();
     }
 
+    private function pageIsFound()
+    {
+        $this->assertSession()->statusCodeEquals(200);
+    }
+
     /**
      * @Then /^I should see "([^"]*)" articles$/
      */
-    public function iShouldSeeArticles($arg1)
+    public function iShouldSeeArticles($count)
     {
-        $this->assertSession()->statusCodeEquals(200);
-        $this->assertSession()->elementsCount('css', 'article', 2);
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'article', $count);
     }
 
     /**
@@ -94,7 +97,35 @@ class FeatureContext extends MinkContext
             $this->thereIsAnArticleWithTitle($title);
         } catch(Pomm\Exception\SqlException $ex) {
             // unique violation
-            assertEquals(23505, $ex->getSQLErrorState());
+            assertEquals(23505, $ex->getSQLErrorState(), "throws a 'unique' violation");
         }
+    }
+
+    /**
+     * @Given /^I should see that one of the articles has the title "([^"]*)"$/
+     */
+    public function iShouldSeeThatOneOfTheArticlesHasTheTitle($title)
+    {
+        $nodes = $this->getSession()->getPage()->findAll('css', 'article h4');
+
+        $found = false;
+        foreach($nodes as $element) {
+            if($element->getText() == $title) {
+                $found = true;
+                break;
+            }
+        }
+        
+        assertTrue($found, "the title exists");
+    }
+
+    /**
+     * @Then /^I should see the article with title "([^"]*)"$/
+     */
+    public function iShouldSeeTheArticleWithTitle($title)
+    {
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'article', 1);
+        $this->assertSession()->elementTextContains('css', 'article h4', $title);
     }
 }

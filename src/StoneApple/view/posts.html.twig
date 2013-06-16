@@ -2,11 +2,9 @@
 
 {% block content %}
 
-    <h2>{{ html|raw }}</h2>
-
     {% for post in posts %}
         <article>
-            <h4>{{ post.title }}</h4>
+            <h4><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h4>
             <p>{{ post.body|raw }}</p>
         </article>
     {% endfor %}  

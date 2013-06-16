@@ -3,6 +3,7 @@
         "php":                          ">=5.3.3",
         "silex/silex":                  "~1.0",
         "twig/twig":                    ">=1.8,<2.0-dev",
+        "symfony/twig-bridge":          "~2.3",
         "pomm/pomm-service-provider":   "dev-master",
         "twitter/bootstrap":            "~2.3",
         "components/bootstrap":         "*"

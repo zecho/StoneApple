@@ -35,11 +35,10 @@ class Application extends SilexApplication
 
     private function registerServiceProviders()
     {
+        $this->register(new UrlGeneratorServiceProvider());
         $this->register(new TwigServiceProvider(), array(
             'twig.path'       => __DIR__.'/view',
-            'twig.class_path' => __DIR__.'/../vendor/twig/lib',
         ));
-        $this->register(new UrlGeneratorServiceProvider());
         $this->register(new PommServiceProvider(), array(
                 'pomm.class_path' => __DIR__.'/vendor/pomm',
                 'pomm.databases' => array(
@@ -53,6 +52,7 @@ class Application extends SilexApplication
     {
         $this->match('/', array($this, 'handleHomepage'))->bind('homepage');
         $this->match('/post/list', array($this, 'handlePostsList'))->bind('posts_list');
+        $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
     }
 
     public function handleHomepage()
@@ -63,13 +63,23 @@ class Application extends SilexApplication
         ));
     }
 
+    public function handlePost($slug)
+    {
+        $connection = $this['pomm']->getDatabase()->getConnection();
+        $post = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')->findByPK(array('slug' => $slug));
+
+        return $this['twig']->render('post.html.twig', array(
+            'title' => sprintf('Stone Apple - %s', $post->getTitle()),
+            'post' => $post
+        ));
+    }
+
     public function handlePostsList()
     {
         $connection = $this['pomm']->getDatabase()->getConnection();
         $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')->findAll();
 
         return $this['twig']->render('posts.html.twig', array(
-            'html' => 'Pomm',
             'title' => 'Stone Apple - Pomm',
             'posts' => $posts
         ));
