@@ -2,3 +2,9 @@ default:
     context:
         parameters:
             env: test
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url:  'http://stone-apple/index_test.php'
+            show_cmd: chromium-browser %s
+            show_auto: true
+            goutte: ~

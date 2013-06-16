@@ -7,6 +7,10 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
+use Behat\MinkExtension\Context\MinkContext;
+
+use Symfony\Component\BrowserKit\Client;
+
 use StoneApple\Application as StoneAppleApplication;
 use StoneApple\Helper\Helper;
 
@@ -18,7 +22,7 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class FeatureContext extends MinkContext
 {
     /** @var \StoneApple\Application */
     var $application;
@@ -35,15 +39,14 @@ class FeatureContext extends BehatContext
     public function __construct(array $parameters)
     {
         $this->env = isset($parameters['env'])?$parameters['env']:"test";
+        $this->application = new StoneAppleApplication($this->env);
     }
 
     /**
      * @BeforeScenario
      */
-    public function setup()
+    public function emptyDatabase()
     {
-        $this->application = new StoneAppleApplication($this->env);
-
         $connection = $this->getPommConnection();
         $map = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
             ->truncate();
@@ -55,19 +58,12 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I access the url "([^"]*)"$/
-     */
-    public function iAccessTheUrl($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Then /^I should see "([^"]*)" articles$/
      */
     public function iShouldSeeArticles($arg1)
     {
-        throw new PendingException();
+        $this->assertSession()->statusCodeEquals(200);
+        $this->assertSession()->elementsCount('css', 'article', 2);
     }
 
     /**

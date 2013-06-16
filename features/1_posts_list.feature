@@ -11,5 +11,5 @@ Feature: Posts list
         Then I cannot add a new article with title "In sheep's clothing"
 
     Scenario: read the post list
-        When I access the url "/post/list"
+        When I go to "/post/list"
         Then I should see "2" articles

@@ -52,7 +52,7 @@ class Application extends SilexApplication
     private function registerRoutes()
     {
         $this->match('/', array($this, 'handleHomepage'))->bind('homepage');
-        $this->match('/pomm', array($this, 'handlePostsList'))->bind('posts_list');
+        $this->match('/post/list', array($this, 'handlePostsList'))->bind('posts_list');
     }
 
     public function handleHomepage()
