@@ -6,9 +6,13 @@ A [Silex][s] + [Pomm][p] + [Behat][b] webapplication.
 General idea
 ------------
 
-The goal is to have a *blog* (test webapplication) running on a Postgres db 
-using Silex + Pomm. And because everything should be tested, I'm throwing Behat/Mink 
-into the mix.
+Building a blog which serves me as a playground to toy around with various 
+building blocks. The ultimate goal is to explore PostgreSQL & Pomm, the bonus 
+is figuring out how to put the different blocks together using the Silex 
+µframework (because it's been a while).
+
+I'm a fan of BDD/TDD, that's why I'm using Behat+[Mink][m] to keep it all running 
+smoothly.
 
 
 Installation
@@ -30,10 +34,18 @@ Apache2 vhost example:
 
 Database configuration (you need to create a config file for each environment):
 
-    <?php #resources/config/dev.php
+    <?php # resources/config/dev.php
 
     // Pomm
     $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
+
+
+Pomm/Model
+----------
+
+Generating the model from the db schema:
+
+    $ php src/StoneApple/generate_model.php
 
 
 Testing
@@ -54,3 +66,4 @@ Inspiration
 [s]: http://silex.sensiolabs.org/
 [p]: http://pomm.coolkeums.org/
 [b]: http://behat.org/
+[m]: http://mink.behat.org/
