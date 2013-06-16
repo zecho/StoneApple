@@ -6,8 +6,9 @@ A [Silex][s] + [Pomm][p] + [Behat][b] webapplication.
 General idea
 ------------
 
-The goal is to have a *blog* running on Silex + Pomm, which actually will 
-have tests (TDD/BDD) in the future but that part is still under construction.
+The goal is to have a *blog* (test webapplication) running on a Postgres db 
+using Silex + Pomm. And because everything should be tested, I'm throwing Behat/Mink 
+into the mix.
 
 
 Installation
@@ -33,6 +34,12 @@ Database configuration (you need to create a config file for each environment):
 
     // Pomm
     $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
+
+
+Testing
+-------
+
+    $ ./bin/behat
 
 
 Inspiration
