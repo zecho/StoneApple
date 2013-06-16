@@ -5,6 +5,7 @@ namespace StoneApple;
 use Silex\Application as SilexApplication;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,7 @@ class Application extends SilexApplication
             'twig.path'       => __DIR__.'/view',
             'twig.class_path' => __DIR__.'/../vendor/twig/lib',
         ));
+        $this->register(new UrlGeneratorServiceProvider());
         $this->register(new PommServiceProvider(), array(
                 'pomm.class_path' => __DIR__.'/vendor/pomm',
                 'pomm.databases' => array(
@@ -50,7 +52,7 @@ class Application extends SilexApplication
     private function registerRoutes()
     {
         $this->match('/', array($this, 'handleHomepage'))->bind('homepage');
-        $this->match('/pomm', array($this, 'handlePostsList'))->bind('pomm');
+        $this->match('/pomm', array($this, 'handlePostsList'))->bind('posts_list');
     }
 
     public function handleHomepage()

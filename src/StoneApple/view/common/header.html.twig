@@ -1,9 +1,9 @@
 <header>
     <ul class="nav nav-pills pull-right">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
+        <li class="active"><a href="{{ app.url_generator.generate('homepage') }}">Home</a></li>
+        <li><a href="{{ app.url_generator.generate('posts_list') }}">News</a></li>
         <li><a href="#">Contact</a></li>
     </ul>
-    <h1 class="muted"><a href="/">Stone Apple</a></h1>
+    <h1 class="muted"><a href="{{ app.url_generator.generate('homepage') }}">Stone Apple</a></h1>
 </header>
 <hr>
