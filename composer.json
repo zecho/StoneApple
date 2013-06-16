@@ -1,15 +1,19 @@
 {
     "require": {
-        "php": ">=5.3.3",
-        "silex/silex": "~1.0",
-        "twig/twig": ">=1.8,<2.0-dev",
-        "pomm/pomm-service-provider":    "dev-master"
+        "php":                          ">=5.3.3",
+        "silex/silex":                  "~1.0",
+        "twig/twig":                    ">=1.8,<2.0-dev",
+        "pomm/pomm-service-provider":   "dev-master",
+        "twitter/bootstrap":            "~2.3",
+        "components/bootstrap":         "*"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable"
     },
     "config": {
-        "bin-dir": "bin/"
+        "bin-dir": "bin/",
+        "component-dir": "web/assets",
+        "component-baseurl": "/assets"
     },
     "autoload": {
         "psr-0": {

@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    {{ html|raw }}
+    <h2>{{ html|raw }}</h2>
 
     {% for post in posts %}
         <article>
-            <h2>{{ post.title }}</h2>
+            <h4>{{ post.title }}</h4>
             <p>{{ post.body|raw }}</p>
         </article>
     {% endfor %}  

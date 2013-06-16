@@ -67,7 +67,7 @@ class Application extends SilexApplication
         $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')->findAll();
 
         return $this['twig']->render('posts.html.twig', array(
-            'html' => '<h1>Pomm</h1>',
+            'html' => 'Pomm',
             'title' => 'Stone Apple - Pomm',
             'posts' => $posts
         ));
