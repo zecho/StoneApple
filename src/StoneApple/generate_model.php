@@ -1,6 +1,6 @@
 <?php #generate_model.php
 
-require __DIR__.'/autoload.php';
+require __DIR__.'/../../vendor/autoload.php';
 
 $env = 'dev';
 $application = new \StoneApple\Application($env);
