@@ -11,7 +11,7 @@ class PostMap extends BasePostMap
 {
     public function truncate()
     {
-        $sql = sprintf("TRUNCATE TABLE %s",
+        $sql = sprintf("TRUNCATE TABLE %s CASCADE",
             $this->getTableName()
         );
 

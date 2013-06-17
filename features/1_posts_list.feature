@@ -1,7 +1,7 @@
-Feature: Posts list
-    In order to find a post
+Feature: Reading the blog
+    In order to read a post
     As a user
-    I need to be able to look at the list
+    I need to be able to look at the posts
 
     Background:
         Given there is an article with title "In sheep's clothing"

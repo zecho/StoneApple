@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h3>Posts tagged with "{{ tag.label }}"</h3>
+
+    {% if tag.posts %}
+
+        {% for post in tag.posts %}
+            <article>
+                <h4><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h4>
+                <p>{{ post.body|raw }}</p>
+            </article>
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert">There are no posts found for this tag.</div>
+
+    {% endif %}
+
+{% endblock %}

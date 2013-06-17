@@ -12,7 +12,9 @@ use Behat\MinkExtension\Context\MinkContext;
 use StoneApple\Application as StoneAppleApplication;
 use StoneApple\Helper\Helper;
 
-use StoneAppleDev\PublicSchema\Post;
+use StoneAppleDev\PublicSchema\Post,
+    StoneAppleDev\PublicSchema\Tag,
+    StoneAppleDev\PublicSchema\PostTag;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -46,7 +48,11 @@ class FeatureContext extends MinkContext
     public function emptyDatabase()
     {
         $connection = $this->getPommConnection();
-        $map = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
+
+        $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
+            ->truncate();
+
+        $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag')
             ->truncate();
     }
 
@@ -86,6 +92,8 @@ class FeatureContext extends MinkContext
         ));
 
         $map->saveOne($article);
+
+        return $article;
     }
 
     /**
@@ -127,5 +135,61 @@ class FeatureContext extends MinkContext
         $this->pageIsFound();
         $this->assertSession()->elementsCount('css', 'article', 1);
         $this->assertSession()->elementTextContains('css', 'article h4', $title);
+    }
+
+    /**
+     * @Given /^there is an article with title "([^"]*)" tagged with:$/
+     */
+    public function thereIsAnArticleWithTitleTaggedWith($title, TableNode $table)
+    {
+        $article = $this->thereIsAnArticleWithTitle($title);
+
+        $connection = $this->getPommConnection();
+        $tagMap = $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag');
+        $relationMap = $connection->getMapFor('\StoneAppleDev\PublicSchema\PostTag');
+
+        foreach ($table->getHash() as $data) {
+            $tags = $tagMap->findWhere('label = ?', array($data['label']), 'LIMIT 1');
+            $tag = $tags->current();
+
+            if(!$tag) {
+                $tag = new Tag();
+                $tag->set('label', $data['label']);
+                $tag->set('slug', Helper::slugify($data['label']));
+
+                $tagMap->saveOne($tag);
+            }
+
+            $relation = new PostTag();
+            $relation->set('post_id', $article->get('id'));
+            $relation->set('tag_id', $tag->get('id'));
+
+            $relationMap->saveOne($relation);
+        }
+    }
+
+    /**
+     * @Given /^there is a tag with label "([^"]*)"$/
+     */
+    public function thereIsATagWithLabel($label)
+    {
+        $connection = $this->getPommConnection();
+        $tagMap = $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag');
+
+        $tag = new Tag();
+        $tag->set('label', $label);
+        $tag->set('slug', Helper::slugify($label));
+
+        $tagMap->saveOne($tag);
+    }
+
+    /**
+     * @Then /^I should see the notice "([^"]*)"$/
+     */
+    public function iShouldSeeTheNotice($msg)
+    {
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'div.alert', 1);
+        $this->assertSession()->elementTextContains('css', 'div.alert', $msg);
     }
 }

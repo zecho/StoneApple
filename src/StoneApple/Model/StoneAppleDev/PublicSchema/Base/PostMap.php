@@ -13,12 +13,13 @@ abstract class PostMap extends BaseObjectMap
         $this->object_class =  'StoneAppleDev\PublicSchema\Post';
         $this->object_name  =  'public.post';
 
+        $this->addField('id', 'int4');
         $this->addField('title', 'varchar');
         $this->addField('slug', 'varchar');
         $this->addField('body', 'text');
         $this->addField('created_at', 'timestamp');
         $this->addField('updated_at', 'timestamp');
 
-        $this->pk_fields = array('slug');
+        $this->pk_fields = array('id');
     }
 }

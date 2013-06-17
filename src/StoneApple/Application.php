@@ -46,6 +46,12 @@ class Application extends SilexApplication
                         'dsn' => $this['pomm.dns'],
                 ))
         ));
+
+        // converter for array_agg() posts
+        $map = $this['pomm']->getDatabase()->getConnection()
+            ->getMapFor('\StoneAppleDev\PublicSchema\Post');
+        $this['pomm']->getDatabase()
+            ->registerConverter('Post', new \Pomm\Converter\PgEntity($map), array('public.post'));
     }
 
     private function registerRoutes()
@@ -53,6 +59,7 @@ class Application extends SilexApplication
         $this->match('/', array($this, 'handleHomepage'))->bind('homepage');
         $this->match('/post/list', array($this, 'handlePostsList'))->bind('posts_list');
         $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
+        $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
     }
 
     public function handleHomepage()
@@ -66,7 +73,10 @@ class Application extends SilexApplication
     public function handlePost($slug)
     {
         $connection = $this['pomm']->getDatabase()->getConnection();
-        $post = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')->findByPK(array('slug' => $slug));
+        // TODO refactor
+        $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
+            ->findWhere('slug = ?', array($slug), 'LIMIT 1');
+        $post = $posts->current();
 
         return $this['twig']->render('post.html.twig', array(
             'title' => sprintf('Stone Apple - %s', $post->getTitle()),
@@ -82,6 +92,20 @@ class Application extends SilexApplication
         return $this['twig']->render('posts.html.twig', array(
             'title' => 'Stone Apple - Pomm',
             'posts' => $posts
+        ));
+    }
+
+    public function handleTag($slug)
+    {
+        $connection = $this['pomm']->getDatabase()->getConnection();
+
+        $tags = $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag')
+            ->getOneWithPosts($slug);
+        $tag = $tags->current();
+
+        return $this['twig']->render('tag.html.twig', array(
+            'title' => sprintf('Stone Apple - Tagged "%s"', $tag->getLabel()),
+            'tag' => $tag
         ));
     }
 
