@@ -19,3 +19,7 @@ Feature: Reading the blog
     Scenario: read a post
         When I go to "/post/in-sheep-s-clothing"
         Then I should see the article with title "In sheep's clothing"
+
+    Scenario: the non-existing post
+        When I go to "/post/the-glass-is-half-full"
+        Then the page is not found

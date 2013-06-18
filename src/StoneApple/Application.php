@@ -76,6 +76,11 @@ class Application extends SilexApplication
         // TODO refactor
         $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
             ->findWhere('slug = ?', array($slug), 'LIMIT 1');
+
+        if($posts->count() == 0) {
+            $this->abort(404, sprintf("Post '%s' does not exist.", $slug));
+        }
+
         $post = $posts->current();
 
         return $this['twig']->render('post.html.twig', array(

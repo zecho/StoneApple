@@ -192,4 +192,12 @@ class FeatureContext extends MinkContext
         $this->assertSession()->elementsCount('css', 'div.alert', 1);
         $this->assertSession()->elementTextContains('css', 'div.alert', $msg);
     }
+
+    /**
+     * @Then /^the page is not found$/
+     */
+    public function thePageIsNotFound()
+    {
+        $this->assertSession()->statusCodeEquals(404);
+    }
 }
