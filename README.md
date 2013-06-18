@@ -36,6 +36,9 @@ Database configuration (you need to create a config file for each environment):
 
     <?php # resources/config/dev.php
 
+    require __DIR__.'/common.php';
+    $app['debug'] = true;
+
     // Pomm
     $app['pomm.dns'] = 'pgsql://user:pass@host:port/dbname';
 
@@ -43,7 +46,9 @@ Database configuration (you need to create a config file for each environment):
 Pomm/Model
 ----------
 
-Generating the model from the db schema:
+The queries to create the database schema are stored in the "resources/db" folder.
+
+To generate the model from the db schema:
 
     $ php src/StoneApple/generate_model.php
 
