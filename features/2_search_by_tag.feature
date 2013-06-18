@@ -24,3 +24,6 @@ Feature: Tagging posts
         And I should see that one of the articles has the title "In sheep's clothing"
         And I should see that one of the articles has the title "Time will tell"
 
+    Scenario: the non-existing tag
+        When I go to "/tag/the-glass-is-half-full"
+        Then the page is not found

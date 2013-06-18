@@ -106,6 +106,11 @@ class Application extends SilexApplication
 
         $tags = $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag')
             ->getOneWithPosts($slug);
+
+        if($tags->count() == 0) {
+            $this->abort(404, sprintf("Tag '%s' does not exist.", $slug));
+        }
+
         $tag = $tags->current();
 
         return $this['twig']->render('tag.html.twig', array(
