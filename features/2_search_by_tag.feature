@@ -12,6 +12,7 @@ Feature: Tagging posts
             | label         |
             | durability    |
         And there is a tag with label "greenest grass"
+        And there is an article with title "Too lazy for tagging"
 
     Scenario: 1 tag has no posts
         When I go to "/tag/greenest-grass"
@@ -27,3 +28,13 @@ Feature: Tagging posts
     Scenario: the non-existing tag
         When I go to "/tag/the-glass-is-half-full"
         Then the page is not found
+
+    Scenario: single post w/ tags shows its tags
+        When I go to "/post/time-will-tell"
+        Then I should see "1" tags
+        And I should see that one tag has label "durability"
+
+    Scenario: single post w/ no-tags shows no-tags
+        When I go to "/post/too-lazy-for-tagging"
+        Then I should see "1" articles
+        And I should see "0" tags

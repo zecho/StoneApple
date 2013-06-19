@@ -48,10 +48,14 @@ class Application extends SilexApplication
         ));
 
         // converter for array_agg() posts
-        $map = $this['pomm']->getDatabase()->getConnection()
-            ->getMapFor('\StoneAppleDev\PublicSchema\Post');
+        $conn = $this['pomm']->getDatabase()->getConnection();
+        $map = $conn->getMapFor('\StoneAppleDev\PublicSchema\Post');
         $this['pomm']->getDatabase()
             ->registerConverter('Post', new \Pomm\Converter\PgEntity($map), array('public.post'));
+
+        $map = $conn->getMapFor('\StoneAppleDev\PublicSchema\Tag');
+        $this['pomm']->getDatabase()
+            ->registerConverter('Tag', new \Pomm\Converter\PgEntity($map), array('public.tag'));
     }
 
     private function registerRoutes()
@@ -73,9 +77,8 @@ class Application extends SilexApplication
     public function handlePost($slug)
     {
         $connection = $this['pomm']->getDatabase()->getConnection();
-        // TODO refactor
         $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
-            ->findWhere('slug = ?', array($slug), 'LIMIT 1');
+            ->getOneWithTags($slug);
 
         if($posts->count() == 0) {
             $this->abort(404, sprintf("Post '%s' does not exist.", $slug));

@@ -5,6 +5,14 @@
     <article>
         <h4>{{ post.title }}</h4>
         <p>{{ post.body|raw }}</p>
+
+        <footer>
+            <ul class="inline tagslist">
+                {% for tag in post.tags %}
+                <li class="tag"><a href="{{ path('tag', { slug: tag.slug }) }}">#{{ tag.label }}</a></li>
+                {% endfor %}
+            </ul>
+        </footer>
     </article>
 
 {% endblock %}

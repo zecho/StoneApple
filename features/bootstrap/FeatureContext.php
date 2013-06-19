@@ -200,4 +200,31 @@ class FeatureContext extends MinkContext
     {
         $this->assertSession()->statusCodeEquals(404);
     }
+
+    /**
+     * @Then /^I should see "([^"]*)" tags$/
+     */
+    public function iShouldSeeTags($count)
+    {
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'ul.tagslist li.tag', $count);
+    }
+
+    /**
+     * @Given /^I should see that one tag has label "([^"]*)"$/
+     */
+    public function iShouldSeeThatOneTagHasLabel($label)
+    {
+        $nodes = $this->getSession()->getPage()->findAll('css', 'ul.tagslist li.tag');
+
+        $found = false;
+        foreach($nodes as $element) {
+            if(strpos($element->getText(), $label) !== false) {
+                $found = true;
+                break;
+            }
+        }
+        
+        assertTrue($found, "the label exists");
+    }
 }
