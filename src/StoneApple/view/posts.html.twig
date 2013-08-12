@@ -1,12 +1,14 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    {% include ('common/sidebar-left.html.twig') %}
 
+    <div class="span9">
     {% for post in posts %}
         <article>
             <h4><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h4>
             <p>{{ post.body|raw }}</p>
         </article>
-    {% endfor %}  
-
+    {% endfor %}
+    </div>
 {% endblock %}
