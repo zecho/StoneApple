@@ -23,11 +23,12 @@ div.main {
     padding-top: 1em;
 }
 
-.user_info img, article img.main {
+.user_info img, article a.thumbnail {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     border: 1px solid #FFF;
+    padding: 0px;
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6);
@@ -51,7 +52,7 @@ div.main {
     line-height: 2em;
 }
 
-article img.main {
+article a.thumbnail {
     float: left;
     margin-right: 1em;
 }
