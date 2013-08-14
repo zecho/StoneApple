@@ -114,7 +114,7 @@ class FeatureContext extends MinkContext
      */
     public function iShouldSeeThatOneOfTheArticlesHasTheTitle($title)
     {
-        $nodes = $this->getSession()->getPage()->findAll('css', 'article h4');
+        $nodes = $this->getSession()->getPage()->findAll('css', 'article h2');
 
         $found = false;
         foreach($nodes as $element) {
@@ -134,7 +134,7 @@ class FeatureContext extends MinkContext
     {
         $this->pageIsFound();
         $this->assertSession()->elementsCount('css', 'article', 1);
-        $this->assertSession()->elementTextContains('css', 'article h4', $title);
+        $this->assertSession()->elementTextContains('css', 'article h2', $title);
     }
 
     /**

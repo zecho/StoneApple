@@ -60,18 +60,9 @@ class Application extends SilexApplication
 
     private function registerRoutes()
     {
-        $this->match('/', array($this, 'handleHomepage'))->bind('homepage');
-        $this->match('/post/list', array($this, 'handlePostsList'))->bind('posts_list');
+        $this->match('/', array($this, 'handlePostsList'))->bind('homepage');
         $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
         $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
-    }
-
-    public function handleHomepage()
-    {
-        return $this['twig']->render('index.html.twig', array(
-            'html' => '<h1>Coucou</h1>',
-            'title' => 'Stone Apple - Coucou'
-        ));
     }
 
     public function handlePost($slug)

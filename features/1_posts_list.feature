@@ -10,8 +10,8 @@ Feature: Reading the blog
     Scenario: a post cannot have a duplicate slug
         Then I cannot add a new article with title "In sheep's clothing"
 
-    Scenario: read the post list
-        When I go to "/post/list"
+    Scenario: the homepage shows the blogpost list
+        When I go to "/"
         Then I should see "2" articles
         And I should see that one of the articles has the title "In sheep's clothing"
         And I should see that one of the articles has the title "Time will tell"
@@ -23,3 +23,4 @@ Feature: Reading the blog
     Scenario: the non-existing post
         When I go to "/post/the-glass-is-half-full"
         Then the page is not found
+ 

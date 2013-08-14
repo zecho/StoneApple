@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="span9">
-    <h3>Posts tagged with "{{ tag.label }}"</h3>
+    <p><em>Posts tagged with "{{ tag.label }}".</em></p>
 
     {% if tag.posts %}
 
         {% for post in tag.posts %}
             <article>
-                <h4><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h4>
+                <h2><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h2>
                 <p>{{ post.body|raw }}</p>
             </article>
         {% endfor %}
