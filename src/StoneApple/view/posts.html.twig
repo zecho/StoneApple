@@ -1,12 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    {% include ('common/sidebar-left.html.twig') %}
-
     <div class="span9">
     {% for post in posts %}
         <article>
-            <h4><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h4>
+            <h2><a href="{{ path('post', {'slug': post.slug}) }}">{{ post.title }}</a></h2>
+	        <img class="main" src="{{ app.request.basepath }}/assets/img/archive-thumbnail-placeholder-small.gif" />
             <p>{{ post.body|raw }}</p>
         </article>
     {% endfor %}

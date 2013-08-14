@@ -2,7 +2,19 @@
     <div class="user_info">
         <img src="{{ app.request.basepath }}/assets/img/avatar-the-sound-of-rosebuds.jpg" width="150px" />
         <div class="details">
-            Water spinach summer purslane catsear celery soybean brussels sprout arugula. Tomatillo chard soybean arugula celery cucumber dandelion celtuce komatsuna asparagus. Pea sprouts pumpkin water spinach kohlrabi salsify taro sea lettuce celery courgette melon carrot avocado groundnut.
+            Water spinach summer purslane catsear celery soybean brussels sprout arugula.
+            <ul>
+            	<li class="twitter"><a href="#">@parsnip</a> on Twitter</li>
+            	<li class="github"><a href="#">Chickweed</a> on Github</li>
+            	<li class="ravelry"><a href="#">cabbage</a> on Ravelry</li>
+            </ul>
         </div>
     </div>
+    <nav>
+	    <ul class="nav nav-pills nav-stacked">
+	        <li class="active"><a href="{{ app.url_generator.generate('homepage') }}">Home</a></li>
+	        <li><a href="{{ app.url_generator.generate('posts_list') }}">News</a></li>
+	        <li><a href="#">Contact</a></li>
+	    </ul>
+	</nav>
 </div>

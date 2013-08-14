@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+<div class="span9">
     <h3>Posts tagged with "{{ tag.label }}"</h3>
 
     {% if tag.posts %}
@@ -17,5 +18,5 @@
         <div class="alert">There are no posts found for this tag.</div>
 
     {% endif %}
-
+</div>
 {% endblock %}

@@ -19,7 +19,11 @@
 
         {% include ('common/header.html.twig') %}
 
-        <div class="row-fluid">
+        <div class="row-fluid main">
+        {% block sidebarleft %}
+            {% include ('common/sidebar-left.html.twig') %}
+        {% endblock %}
+
         {% block content %}
             <h1>Documentation</h1>
         {% endblock %}

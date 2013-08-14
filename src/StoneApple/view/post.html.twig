@@ -1,11 +1,9 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    {% include ('common/sidebar-left.html.twig') %}
-
     <div class="span9">
     <article>
-        <h4>{{ post.title }}</h4>
+        <h2>{{ post.title }}</h2>
         <p>{{ post.body|raw }}</p>
 
         <footer>
@@ -17,5 +15,4 @@
         </footer>
     </article>
     </div>
-
 {% endblock %}
