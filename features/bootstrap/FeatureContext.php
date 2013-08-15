@@ -76,9 +76,9 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @Given /^there is an article with title "([^"]*)"$/
+     * @Given /^there is an article with title "([^"]*)" created on "([^"]*)"$/
      */
-    public function thereIsAnArticleWithTitle($title)
+    public function thereIsAnArticleWithTitleCreatedOn($title, $createdOn)
     {
         $connection = $this->getPommConnection();
         $map = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post');
@@ -90,11 +90,21 @@ class FeatureContext extends MinkContext
             "The bird flew over the Cookoo's nest crying `%s'",
             $title
         ));
+        $article->set('created_at', $createdOn);
 
         $map->saveOne($article);
 
         return $article;
     }
+
+    /**
+     * @Given /^there is an article with title "([^"]*)"$/
+     */
+    public function thereIsAnArticleWithTitle($title)
+    {
+        return $this->thereIsAnArticleWithTitleCreatedOn($title, date('Y-m-d h:i:s'));
+    }
+
 
     /**
      * @Then /^I cannot add a new article with title "([^"]*)"$/
@@ -227,4 +237,23 @@ class FeatureContext extends MinkContext
         
         assertTrue($found, "the label exists");
     }
+
+    /**
+     * @Then /^I should see that the first post in the list is "([^"]*)"$/
+     */
+    public function iShouldSeeThatTheFirstPostInTheListIs($label)
+    {
+        $nodes = $this->getSession()->getPage()->findAll('css', 'article h2');
+
+        foreach($nodes as $element) {
+            assertTrue(
+                strpos($element->getText(), $label) !== false,
+                sprintf('the first element contains title "%s"', $label)
+            );
+            break;
+        }
+
+    }
+
+    
 }

@@ -86,7 +86,8 @@ class Application extends SilexApplication
     public function handlePostsList()
     {
         $connection = $this['pomm']->getDatabase()->getConnection();
-        $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')->findAll();
+        $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
+            ->findAll('ORDER BY created_at DESC');
 
         return $this['twig']->render('posts.html.twig', array(
             'title' => 'Stone Apple - Pomm',
