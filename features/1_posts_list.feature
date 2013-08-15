@@ -27,4 +27,3 @@ Feature: Reading the blog
     Scenario: the non-existing post
         When I go to "/post/the-glass-is-half-full"
         Then the page is not found
- 
