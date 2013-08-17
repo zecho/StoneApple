@@ -14,7 +14,8 @@ use StoneApple\Helper\Helper;
 
 use StoneAppleDev\PublicSchema\Post,
     StoneAppleDev\PublicSchema\Tag,
-    StoneAppleDev\PublicSchema\PostTag;
+    StoneAppleDev\PublicSchema\PostTag,
+    StoneAppleDev\PublicSchema\User;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -133,7 +134,7 @@ class FeatureContext extends MinkContext
                 break;
             }
         }
-        
+
         assertTrue($found, "the title exists");
     }
 
@@ -234,7 +235,7 @@ class FeatureContext extends MinkContext
                 break;
             }
         }
-        
+
         assertTrue($found, "the label exists");
     }
 
@@ -255,5 +256,69 @@ class FeatureContext extends MinkContext
 
     }
 
-    
+    /**
+     * @Given /^I am not logged in$/
+     */
+    public function iAmNotLoggedIn()
+    {
+        $this->getSession()->reset();
+    }
+
+    /**
+     * @Then /^I should see the login screen$/
+     */
+    public function iShouldSeeTheLoginScreen()
+    {
+        $this->assertSession()->elementsCount('css', 'form#login', 1);
+    }
+
+    /**
+     * @Then /^I should see the success message "([^"]*)"$/
+     */
+    public function iShouldSeeTheSuccessMessage($msg)
+    {
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'div.alert-success', 1);
+        $this->assertSession()->elementTextContains('css', 'div.alert-success', $msg);
+    }
+
+    /**
+     * @Then /^I should see the error message "([^"]*)"$/
+     */
+    public function iShouldSeeTheErrorMessage($msg)
+    {
+        $this->pageIsFound();
+        $this->assertSession()->elementsCount('css', 'div.alert-error', 1);
+        $this->assertSession()->elementTextContains('css', 'div.alert-error', $msg);
+    }
+
+    /**
+     * @Given /^I there is an administrator with values$/
+     */
+    public function iThereIsAnAdministratorWithValues(TableNode $table)
+    {
+        $connection = $this->getPommConnection();
+        $map = $connection->getMapFor('\StoneAppleDev\PublicSchema\User');
+
+        foreach($table as $row ) {
+            $user = new User();
+            $user->set('username', $row->get('login'));
+            $user->set('password', $row->get('password'));
+            $user->set('email', $row->get('email'));
+
+            $map->saveOne($user);
+        }
+    }
+
+    /**
+     * @Given /^I submit the form with values$/
+     */
+    public function iSubmitTheFormWithValues(TableNode $table)
+    {
+        foreach ($table->getRows() as $key => $row) {
+            if($key == 0) continue;
+            $this->fillField($row[0], $row[1]);
+        }
+        $this->pressButton('Login');
+    }
 }

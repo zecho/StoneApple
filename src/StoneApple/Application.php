@@ -6,10 +6,14 @@ use Silex\Application as SilexApplication;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Pomm\Silex\PommServiceProvider;
 
@@ -36,8 +40,14 @@ class Application extends SilexApplication
     private function registerServiceProviders()
     {
         $this->register(new UrlGeneratorServiceProvider());
+        $this->register(new ValidatorServiceProvider());
+        $this->register(new TranslationServiceProvider(), array(
+            'translator.messages' => array(),
+        ));
+        $this->register(new FormServiceProvider());
         $this->register(new TwigServiceProvider(), array(
             'twig.path'       => __DIR__.'/view',
+            'twig.form.templates' => array('Form/fields.html.twig')
         ));
         $this->register(new PommServiceProvider(), array(
                 'pomm.class_path' => __DIR__.'/vendor/pomm',
@@ -63,6 +73,42 @@ class Application extends SilexApplication
         $this->match('/', array($this, 'handlePostsList'))->bind('homepage');
         $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
         $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
+        $this->match('/admin/', array($this, 'handleAdmin'))->bind('admin');
+    }
+
+    public function handleAdmin(Request $request)
+    {
+        $msg = array();
+
+        $form = $this['form.factory']->createBuilder('form')
+            ->add('username','text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 3, 'max' => 50))
+            )))
+            ->add('password', 'password', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 5, 'max' => 50))
+            )))
+            ->getForm();
+
+        if ('POST' == $request->getMethod()) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                // TODO login
+                // TODO redirect
+            } else {
+                // TODO error
+            }
+        }
+
+        // display the form
+        return $this['twig']->render('admin/index.html.twig', array(
+            'title' => 'Stone Apple - Login',
+            'form' => $form->createView()
+        ));
     }
 
     public function handlePost($slug)
@@ -90,7 +136,7 @@ class Application extends SilexApplication
             ->findAll('ORDER BY created_at DESC');
 
         return $this['twig']->render('posts.html.twig', array(
-            'title' => 'Stone Apple - Pomm',
+            'title' => 'Stone Apple',
             'posts' => $posts
         ));
     }

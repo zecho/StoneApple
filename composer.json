@@ -6,7 +6,11 @@
         "symfony/twig-bridge":          "~2.3",
         "pomm/pomm-service-provider":   "dev-master",
         "twitter/bootstrap":            "~2.3",
-        "components/bootstrap":         "*"
+        "components/bootstrap":         "*",
+        "symfony/form":                 "~2.3",
+        "symfony/validator":            "~2.3",
+        "symfony/config":               "~2.3",
+        "symfony/translation":          "~2.3"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",
