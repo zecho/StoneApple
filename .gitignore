@@ -10,3 +10,4 @@ bin
 resources/config/dev.php
 resources/config/prod.php
 resources/config/test.php
+behat.yml
