@@ -29,3 +29,12 @@ CREATE TABLE comment (
     body text NOT NULL,
     created_at timestamp DEFAULT LOCALTIMESTAMP
 );
+
+CREATE TABLE "user" (
+    id serial PRIMARY KEY,
+    username varchar(50) UNIQUE NOT NULL,
+    password varchar(50) NOT NULL,
+    email varchar(100) UNIQUE NOT NULL,
+    created_at timestamp DEFAULT LOCALTIMESTAMP,
+    updated_at timestamp DEFAULT LOCALTIMESTAMP
+);
