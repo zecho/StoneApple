@@ -9,6 +9,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,7 @@ class Application extends SilexApplication
 
     private function registerServiceProviders()
     {
+        $this->register(new SessionServiceProvider());
         $this->register(new UrlGeneratorServiceProvider());
         $this->register(new ValidatorServiceProvider());
         $this->register(new TranslationServiceProvider(), array(
@@ -73,13 +75,25 @@ class Application extends SilexApplication
         $this->match('/', array($this, 'handlePostsList'))->bind('homepage');
         $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
         $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
-        $this->match('/admin/', array($this, 'handleAdmin'))->bind('admin');
+        $this->match('/admin/', array($this, 'handleAdmin'))->bind('admin_home');
+        $this->match('/admin/login', array($this, 'handleAdminLogin'))->bind('admin_login');
     }
 
     public function handleAdmin(Request $request)
     {
-        $msg = array();
+        if (null === $user = $this['session']->get('user')) {
+            return $this->redirect($this['url_generator']->generate('admin_login'));
+        }
 
+        // display the form
+        return $this['twig']->render('admin/index.html.twig', array(
+            'title' => 'Stone Apple - Admin - Welcome',
+            'user' => $user
+        ));
+    }
+
+    public function handleAdminLogin(Request $request)
+    {
         $form = $this['form.factory']->createBuilder('form')
             ->add('username','text', array('constraints' => array(
                 new Assert\NotBlank(),
@@ -97,17 +111,36 @@ class Application extends SilexApplication
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                // TODO login
-                // TODO redirect
+                $connection = $this['pomm']->getDatabase()->getConnection();
+                $users = $connection->getMapFor('\StoneAppleDev\PublicSchema\User')
+                    ->findWhere(sprintf("username = '%s' AND password = '%s'",
+                        $data['username'], $data['password'] // TODO encrypt password!
+                    ))
+                ;
+
+                if($users && $users->count() == 1) {
+                    $this['session']->set('user', $users->current());
+                    return $this->redirect($this['url_generator']->generate('admin_home'));
+                } else {
+                    // wrong!!!!
+                    $error = "Your username or password is incorrect.";
+                }
+
             } else {
-                // TODO error
+                // please fill in the form like a good human
+                $error = "Please correct the errors below.";
             }
         }
 
+        $response = new Response();
+        $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'site_login'));
+        $response->setStatusCode(401, 'Please sign in.');
+
         // display the form
-        return $this['twig']->render('admin/index.html.twig', array(
+        return $this['twig']->render('admin/login.html.twig', array(
             'title' => 'Stone Apple - Login',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'error' => isset($error)?$error:''
         ));
     }
 

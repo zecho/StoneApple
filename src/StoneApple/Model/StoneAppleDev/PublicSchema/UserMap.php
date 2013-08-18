@@ -9,4 +9,12 @@ use \Pomm\Query\Where;
 
 class UserMap extends BaseUserMap
 {
+    public function truncate()
+    {
+        $sql = sprintf("TRUNCATE TABLE %s CASCADE",
+            $this->getTableName()
+        );
+
+        return $this->query($sql);
+    }
 }

@@ -5,37 +5,37 @@ Feature: Adminstration login
 
     Background:
         Given I there is an administrator with values
-            | login  | email            | password |
-            | toto   | toto@example.com | secr3T!  |
+            | field    | value            |
+            | username | toto             |
+            | email    | toto@example.com |
+            | password | secr3T!          |
 
     Scenario: not logged in => login screen
-        Given I am not logged in
-        When I go to "/admin/"
-        Then I should see the login screen
+        When I access the admin interface
+        Then I should be redirected
+        And I should see the login screen
 
     Scenario: existing user (success)
-        Given I am not logged in
-        When I go to "/admin/"
+        When I go to "/admin/login"
         And I submit the form with values
             | field         | value         |
             | form_username | toto          |
             | form_password | secr3T!       |
-        Then I should see the success message "Welcome toto."
+        Then I should be redirected
+        And I should see the success message "Welcome toto."
 
     Scenario: wrong password (fail)
-        Given I am not logged in
-        When I go to "/admin/"
+        When I go to "/admin/login"
         And I submit the form with values
             | field         | value         |
             | form_username | toto          |
             | form_password | wr0ngPwd!     |
-        Then I should see the error message "Error."
+        Then I should see the error message "Your username or password is incorrect."
 
     Scenario: wrong username (fail)
-        Given I am not logged in
-        When I go to "/admin/"
+        When I go to "/admin/login"
         And I submit the form with values
             | field         | value         |
             | form_username | joske         |
             | form_password | secr3T!       |
-        Then I should see the error message "Error."
+        Then I should see the error message "Your username or password is incorrect."

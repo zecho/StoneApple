@@ -46,6 +46,12 @@ class FeatureContext extends MinkContext
     /**
      * @BeforeScenario
      */
+    public function cleanUp()
+    {
+        $this->getSession()->setBasicAuth(null, null);
+        $this->emptyDatabase();
+    }
+
     public function emptyDatabase()
     {
         $connection = $this->getPommConnection();
@@ -54,6 +60,9 @@ class FeatureContext extends MinkContext
             ->truncate();
 
         $connection->getMapFor('\StoneAppleDev\PublicSchema\Tag')
+            ->truncate();
+
+        $connection->getMapFor('\StoneAppleDev\PublicSchema\User')
             ->truncate();
     }
 
@@ -257,14 +266,6 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @Given /^I am not logged in$/
-     */
-    public function iAmNotLoggedIn()
-    {
-        $this->getSession()->reset();
-    }
-
-    /**
      * @Then /^I should see the login screen$/
      */
     public function iShouldSeeTheLoginScreen()
@@ -300,14 +301,11 @@ class FeatureContext extends MinkContext
         $connection = $this->getPommConnection();
         $map = $connection->getMapFor('\StoneAppleDev\PublicSchema\User');
 
-        foreach($table as $row ) {
-            $user = new User();
-            $user->set('username', $row->get('login'));
-            $user->set('password', $row->get('password'));
-            $user->set('email', $row->get('email'));
-
-            $map->saveOne($user);
+        $user = new User();
+        foreach($table->getRows() as $row ) {
+            $user->set($row[0], $row[1]);
         }
+        $map->saveOne($user);
     }
 
     /**
@@ -320,5 +318,24 @@ class FeatureContext extends MinkContext
             $this->fillField($row[0], $row[1]);
         }
         $this->pressButton('Login');
+    }
+
+    /**
+     * @When /^I access the admin interface$/
+     */
+    public function iAccessTheAdminInterface()
+    {
+        $client = $this->getSession()->getDriver()->getClient();
+        $client->followRedirects(false);
+        $this->visit('/admin/');
+    }
+
+    /**
+     * @Then /^I should be redirected$/
+     */
+    public function iShouldBeRedirected()
+    {
+        $client = $this->getSession()->getDriver()->getClient();
+        $client->followRedirect();
     }
 }

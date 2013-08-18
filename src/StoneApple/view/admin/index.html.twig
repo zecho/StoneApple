@@ -6,11 +6,10 @@
 
 {% block content %}
 <div class="span9">
-    <h2>Login</h2>
+    <h2>Welcome</h2>
 
-    <form id="login" method="POST" action="{{ app.url_generator.generate('admin') }}">
-    {{ form_widget(form) }}
-    <input type="submit" value="Login" class="btn btn-success" />
-    </form>
+    <div class="alert alert-success">
+        Welcome {{ user.username }}.
+    </div>
 </div>
 {% endblock %}
