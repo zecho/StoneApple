@@ -6,12 +6,12 @@ A [Silex][s] + [Pomm][p] + [Behat][b] webapplication.
 General idea
 ------------
 
-Building a blog which serves me as a playground to toy around with various 
-building blocks. The ultimate goal is to explore PostgreSQL & Pomm, the bonus 
-is figuring out how to put the different blocks together using the Silex 
+Building a blog which serves me as a playground to toy around with various
+building blocks. The ultimate goal is to explore PostgreSQL & Pomm, the bonus
+is figuring out how to put the different blocks together using the Silex
 µframework (because it's been a while).
 
-I'm a fan of BDD/TDD, that's why I'm using Behat+[Mink][m] to keep it all running 
+I'm a fan of BDD/TDD, that's why I'm using Behat+[Mink][m] to keep it all running
 smoothly.
 
 
@@ -55,6 +55,8 @@ To generate the model from the db schema:
 
 Testing
 -------
+
+Copy the behat.yml.dist to behat.yml, make the changes you need and run:
 
     $ ./bin/behat
 
