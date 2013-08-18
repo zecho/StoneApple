@@ -8,6 +8,16 @@
 <div class="span9">
     <h2>Login</h2>
 
+    {% if flashes %}
+        {% for key, flash in flashes %}
+            <div class="alert alert-{{ key }}">
+            {% for the_flash in flash %}
+            {{ the_flash }}<br />
+            {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if error %}
     <div class="alert alert-error">{{ error }}</div>
     {% endif %}

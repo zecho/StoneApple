@@ -19,3 +19,5 @@ Welsh onion water spinach asparagus fava bean daikon melon burdock. Gram cucumbe
 INSERT INTO tag (id, label, slug) VALUES (1, 'joske', 'joske'), (2, 'deep thoughts', 'deep-thoughts'), (3, 'all things green', 'all-things-green');
 
 INSERT INTO post_tag (post_id, tag_id) VALUES (1, 1), (1, 3), (2, 2), (3, 3);
+
+INSERT INTO "user" (username, "password", email) VALUES ('toto', 'seCr3T!', 'toto@example.com');

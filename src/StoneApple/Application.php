@@ -77,6 +77,7 @@ class Application extends SilexApplication
         $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
         $this->match('/admin/', array($this, 'handleAdmin'))->bind('admin_home');
         $this->match('/admin/login', array($this, 'handleAdminLogin'))->bind('admin_login');
+        $this->match('/admin/logout', array($this, 'handleAdminLogout'))->bind('admin_logout');
     }
 
     public function handleAdmin(Request $request)
@@ -140,8 +141,17 @@ class Application extends SilexApplication
         return $this['twig']->render('admin/login.html.twig', array(
             'title' => 'Stone Apple - Login',
             'form' => $form->createView(),
-            'error' => isset($error)?$error:''
+            'error' => isset($error)?$error:'',
+            'flashes' => $this['session']->getFlashBag()->all()
         ));
+    }
+
+    public function handleAdminLogout()
+    {
+        $this['session']->remove('user');
+        $this['session']->getFlashBag()->add('success', 'You are successfully logged out.');
+
+        return $this->redirect($this['url_generator']->generate('admin_login'));
     }
 
     public function handlePost($slug)

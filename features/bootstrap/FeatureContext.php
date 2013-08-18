@@ -338,4 +338,22 @@ class FeatureContext extends MinkContext
         $client = $this->getSession()->getDriver()->getClient();
         $client->followRedirect();
     }
+
+    /**
+     * @Given /^I am connected as user "([^"]*)" with password "([^"]*)"$/
+     */
+    public function iAmConnectedAsUserWithPassword($login, $password)
+    {
+        $client = $this->getSession()->getDriver()->getClient();
+        $client->followRedirects(false);
+
+        $this->visit('/admin/login');
+        $this->fillField('form_username', $login);
+        $this->fillField('form_password', $password);
+        $this->pressButton('Login');
+
+        $this->iShouldBeRedirected();
+
+        $this->iShouldSeeTheSuccessMessage("Welcome toto.");
+    }
 }

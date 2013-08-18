@@ -39,3 +39,10 @@ Feature: Adminstration login
             | form_username | joske         |
             | form_password | secr3T!       |
         Then I should see the error message "Your username or password is incorrect."
+
+    Scenario: logout
+        Given I am connected as user "toto" with password "secr3T!"
+        When I go to "admin/logout"
+        Then I should be redirected
+        And I should see the login screen
+        And I should see the success message "You are successfully logged out."
