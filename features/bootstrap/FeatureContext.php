@@ -39,6 +39,9 @@ class FeatureContext extends MinkContext
     public function __construct(array $parameters)
     {
         $this->env = isset($parameters['env'])?$parameters['env']:"test";
+        // before you go crazy trying to change the config of this one on the fly
+        // thinking that you'll see a difference in the one mink is using,
+        // this is merely used to empty the database
         $this->application = new StoneAppleApplication($this->env);
     }
 
@@ -133,7 +136,7 @@ class FeatureContext extends MinkContext
                 break;
             }
         }
-        
+
         assertTrue($found, "the title exists");
     }
 
@@ -234,7 +237,7 @@ class FeatureContext extends MinkContext
                 break;
             }
         }
-        
+
         assertTrue($found, "the label exists");
     }
 
@@ -254,6 +257,4 @@ class FeatureContext extends MinkContext
         }
 
     }
-
-    
 }
