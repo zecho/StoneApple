@@ -257,4 +257,20 @@ class FeatureContext extends MinkContext
         }
 
     }
+
+    /**
+     * @Then /^I should see the blog-info in the rss-feed$/
+     */
+    public function iShouldSeeTheBlogInfoInTheRssFeed()
+    {
+        $this->assertElementOnPage('channel');
+    }
+
+    /**
+     * @Given /^I should see the article "([^"]*)" in the rss-feed$/
+     */
+    public function iShouldSeeTheArticleInTheRssFeed($title)
+    {
+        $this->assertPageContainsText($title);
+    }
 }

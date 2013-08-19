@@ -63,6 +63,7 @@ class Application extends SilexApplication
         $this->match('/', array($this, 'handlePostsList'))->bind('homepage');
         $this->match('/post/{slug}', array($this, 'handlePost'))->bind('post');
         $this->match('/tag/{slug}', array($this, 'handleTag'))->bind('tag');
+        $this->match('/rss', array($this, 'handleFeed'))->bind('feed');
     }
 
     public function handlePost($slug)
@@ -90,6 +91,19 @@ class Application extends SilexApplication
             ->findAll('ORDER BY created_at DESC');
 
         return $this['twig']->render('posts.html.twig', array(
+            'title' => 'Stone Apple - Pomm',
+            'posts' => $posts
+        ));
+    }
+
+    public function handleFeed()
+    {
+        // TODO set return type in header
+        $connection = $this['pomm']->getDatabase()->getConnection();
+        $posts = $connection->getMapFor('\StoneAppleDev\PublicSchema\Post')
+            ->findAll('ORDER BY created_at DESC LIMIT 10');
+
+        return $this['twig']->render('feed.xml.twig', array(
             'title' => 'Stone Apple - Pomm',
             'posts' => $posts
         ));
